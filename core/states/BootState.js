@@ -1,39 +1,44 @@
 class BootState extends Phaser.State {
-    create() {
-        this.title = new Phaser.Text(
-          this.game,
-          this.game.world.centerX,
-          this.game.world.centerY - 200,
-          'Erase\'Em Up',
-          {
-            font: '36px Tahoma',
-            fill: 'white',
-            align: 'center'
-          }
-        );
+  preload () {
+    // loading all game resources
+    this.load.image('player', '/assets/sprites/player.png');
+  }
 
-        this.title.anchor.setTo(0.5);
+  create () {
+    this.title = new Phaser.Text(
+      this.game,
+      this.game.world.centerX,
+      this.game.world.centerY - 200,
+      "Erase'Em Up",
+      {
+        font: "36px Tahoma",
+        fill: "white",
+        align: "center",
+      },
+    );
 
-        this.start = new TextButton({
-            game: this.game,
-            x: this.game.world.centerX,
-            y: this.game.world.centerY,
-            overFrame: 2,
-            outFrame: 1,
-            downFrame: 0,
-            upFrame: 1,
-            label: 'Let\'s Rock',
-            style: {
-                font: '16px Verdana',
-                fill: 'white',
-                align: 'center'
-            }
-        });
+    this.title.anchor.setTo(0.5);
 
-        this.start.onInputUp.add(() => this.state.start('Game'));
+    this.start = new TextButton({
+      game: this.game,
+      x: this.game.world.centerX,
+      y: this.game.world.centerY,
+      overFrame: 2,
+      outFrame: 1,
+      downFrame: 0,
+      upFrame: 1,
+      label: "Let's Rock",
+      style: {
+        font: "16px Verdana",
+        fill: "white",
+        align: "center",
+      },
+    });
 
-        this.menuPanel = this.add.group();
-        this.menuPanel.add(this.title);
-        this.menuPanel.add(this.start);
-    }
+    this.start.onInputUp.add(() => this.state.start("Game"));
+
+    this.menuPanel = this.add.group();
+    this.menuPanel.add(this.title);
+    this.menuPanel.add(this.start);
+  }
 }
