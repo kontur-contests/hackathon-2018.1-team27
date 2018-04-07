@@ -1,16 +1,18 @@
 class GameState extends Phaser.State {
   constructor() {
     super();
-    this.MAX_ENEMIES = 6
+    this.MAX_ENEMIES = 6;
+    this.firingTimer = 0;
   }
 
   preload() {
-    this.load.image('player', '/assets/sprites/player.png');
+    this.load.image('player', '/assets/sprites/2.png');
     this.load.image('cursor', '/assets/sprites/cursor.png');
     this.load.image('bullet', '/assets/sprites/bullet.png');
-    this.load.image('rocket', '/assets/gfx/rocket.png');
+    this.load.spritesheet('rocket', '/assets/gfx/ball.png', 10, 10);
+    this.load.spritesheet('monster', '/assets/gfx/10.png', 32, 32);
 
-    this.load.spritesheet('explosion', '/assets/gfx/explosion.png', 128, 128);
+    this.load.spritesheet('explosion', '/assets/gfx/fx-7.png', 82, 72);
   }
 
   create() {
@@ -30,6 +32,15 @@ class GameState extends Phaser.State {
 
     this.playerGroup.add(this.player);
 
+    this.enemyBullets = game.add.group();
+    this.enemyBullets.enableBody = true;
+    this.enemyBullets.physicsBodyType = Phaser.Physics.ARCADE;
+    this.enemyBullets.createMultiple(30, 'rocket');
+    this.enemyBullets.setAll('anchor.x', 0.5);
+    this.enemyBullets.setAll('anchor.y', 1);
+    this.enemyBullets.setAll('outOfBoundsKill', true);
+    this.enemyBullets.setAll('checkWorldBounds', true);
+
     this.createEnemies();
   }
 
@@ -44,16 +55,28 @@ class GameState extends Phaser.State {
     this.game.physics.arcade.overlap(
       this.playerGroup, this.enemiesGroup, this.hitPlayer, null, this
     );
+
+    this.game.physics.arcade.overlap(
+      this.playerGroup, this.enemyBullets, this.hitPlayer, null, this
+    );
   }
 
   hitEnemy(bullet, enemy) {
     bullet.kill();
     enemy.kill();
+    this.getExplosion(enemy.x, enemy.y);
     console.log('kill enemy');
   }
 
-  hitPlayer(a, b) {
-    debugger;
+  hitPlayer(player, bullet) {
+    console.log('player', player, 'bullet', bullet);
+    player.kill();
+    bullet.kill();
+
+    this.getExplosion(bullet.x, bullet.y);
+    // debugger;
+
+    console.log('bullet kill');
   }
 
   render() {
@@ -96,7 +119,7 @@ class GameState extends Phaser.State {
       y: 800
     }]
 
-    const rndSpawnPoint = spawnPoints[this.game.rnd.integerInRange(0, spawnPoints.length - 1)];
+    let rndSpawnPoint = spawnPoints[this.game.rnd.integerInRange(0, spawnPoints.length - 1)];
     let x = rndSpawnPoint.x;
     let y = rndSpawnPoint.y;
 
@@ -104,7 +127,7 @@ class GameState extends Phaser.State {
 
     // If there aren't any available, create a new one
     if (enemy === null) {
-      enemy = new Enemy(this.game, x, y, this.player);
+      enemy = new Enemy(this.game, x+10, y+10, this.player);
       this.enemiesGroup.add(enemy);
     }
 
@@ -112,7 +135,7 @@ class GameState extends Phaser.State {
 
     enemy.x = x;
     enemy.y = y;
-
+    rndSpawnPoint = 0;
     return enemy;
     // this.game.add.existing(
     //   new Enemy(this.game, this.game.width/2, this.game.height - 16, this.player)
@@ -129,7 +152,7 @@ class GameState extends Phaser.State {
       explosion.anchor.setTo(0.5, 0.5);
 
       // Add an animation for the explosion
-      var animation = explosion.animations.add('boom', [0, 1, 2, 3], 60, false);
+      var animation = explosion.animations.add('boom', [0, 1, 2, 3, 4 ,5 ,6 ,7], 50, false);
       animation.killOnComplete = true;
 
       // Add the explosion sprite to the group
@@ -154,6 +177,32 @@ class GameState extends Phaser.State {
     this.game.physics.arcade.collide(this.enemiesGroup, this.enemiesGroup);
   }
 
+  enemyFires () {
+
+    //  Grab the first bullet we can from the pool
+    let enemyBullet = this.enemyBullets.getFirstExists(false);
+    let livingEnemies = [];
+
+    this.enemiesGroup.forEachAlive(function(m){
+
+        // put every living enemy in an array
+        livingEnemies.push(m);
+    });
+
+    if (enemyBullet && livingEnemies.length > 0)
+    {
+        
+        let random = this.game.rnd.integerInRange(0, livingEnemies.length-1);
+
+        let shooter = livingEnemies[random];
+        enemyBullet.reset(shooter.body.x, shooter.body.y);
+
+        this.game.physics.arcade.moveToObject(enemyBullet,this.player,500);
+        this.firingTimer = this.game.time.now + 250;
+    }
+
+}
+
   updateEnemies() {
     if (this.enemiesGroup.countLiving() < this.MAX_ENEMIES) {
       this.createEnemies();
@@ -162,10 +211,15 @@ class GameState extends Phaser.State {
     this.enemiesGroup.forEachAlive((m) => {
       const distance = this.game.math.distance(m.x, m.y,
         this.player.x, this.player.y);
-      if (distance < 50) {
-        m.kill();
-        // this.getExplosion(m.x, m.y);
+      if (this.game.time.now > this.firingTimer)
+      {
+        this.enemyFires();
       }
+
+      // if (distance < 50) {
+      //   m.kill();
+      //   this.getExplosion(m.x, m.y);
+      // }
     });
   }
 }

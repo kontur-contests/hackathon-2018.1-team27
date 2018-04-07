@@ -1,7 +1,7 @@
 // Missile constructor
 class Enemy extends Phaser.Sprite {
     constructor(game, x, y, player) {
-        super(game, x, y, "rocket");
+        super(game, x, y, "monster");
         this.player = player; 
 
         // Set the pivot point for this sprite to the center
