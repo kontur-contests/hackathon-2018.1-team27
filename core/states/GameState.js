@@ -3,6 +3,7 @@ class GameState extends Phaser.State {
     super();
     this.MAX_ENEMIES = 6;
     this.firingTimer = 0;
+    this._score = 0;
   }
 
   preload() {
@@ -16,6 +17,8 @@ class GameState extends Phaser.State {
   }
 
   create() {
+
+    this._score = 0;
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
     this.game.add.tileSprite(0, 0, 800, 600, 'background');
@@ -45,6 +48,21 @@ class GameState extends Phaser.State {
     this.enemyBullets.setAll("checkWorldBounds", true);
 
     this.createEnemies();
+
+    this.titleScore = new Phaser.Text(
+      this.game,
+      100,
+      100,
+      `Score: ${this._score}`,
+      {
+        font: "24px Tahoma",
+        fill: "white",
+        align: "center"
+      }
+    );
+    this.titleScore.anchor.setTo(0.5);
+    this.menuPanel = this.add.group();
+    this.menuPanel.add(this.titleScore);
   }
 
   update() {
@@ -80,6 +98,8 @@ class GameState extends Phaser.State {
     bullet.kill();
     enemy.kill();
     this.getExplosion(enemy.x, enemy.y);
+    this._score++;
+    this.titleScore.setText(`Score: ${this._score}`);
     this.game.camera.shake(0.01, 500);
   }
 
@@ -89,7 +109,7 @@ class GameState extends Phaser.State {
     this.getExplosion(bullet.x, bullet.y);
     this.game.camera.shake(0.01, 500);
 
-    this.game.time.events.add(500, () => this.state.start("GameOver"));
+    this.game.time.events.add(500, () => this.state.start("GameOver", true, false, this._score));
   }
 
   createEnemies() {
@@ -123,7 +143,7 @@ class GameState extends Phaser.State {
 
     enemy.x = x;
     enemy.y = y;
-    rndSpawnPoint = 0;
+
     return enemy;
   }
 

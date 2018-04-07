@@ -1,12 +1,14 @@
 class GameOverState extends Phaser.State {
-  preload() {}
+  init(score) {
+    this.score = score;
+  }
 
   create() {
     this.title = new Phaser.Text(
       this.game,
       this.game.world.centerX,
       this.game.world.centerY - 200,
-      "Game Over",
+      `Game Over \n Score: ${this.score}`,
       {
         font: "36px Tahoma",
         fill: "white",

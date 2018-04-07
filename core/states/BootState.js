@@ -6,7 +6,7 @@ class BootState extends Phaser.State {
       this.game,
       this.game.world.centerX,
       this.game.world.centerY - 200,
-      "Dream Game",
+      "The Dream Game",
       {
         font: "36px Tahoma",
         fill: "white",
