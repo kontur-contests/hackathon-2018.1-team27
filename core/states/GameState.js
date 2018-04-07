@@ -6,46 +6,35 @@ class GameState extends Phaser.State {
 
   preload () {
     this.load.image('player', '/assets/sprites/player.png');
+    this.load.image('cursor', '/assets/sprites/cursor.png');
     this.load.image('rocket', '/assets/gfx/rocket.png');
 
     this.load.spritesheet('explosion', '/assets/gfx/explosion.png', 128, 128);
-    this.load.image('cursor', '/assets/sprites/cursor.png');
   }
 
   create() {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
-     // Create a group to hold the enemies
-     this.enemiesGroup = this.game.add.group();
+    this.enemiesGroup = this.game.add.group();
+    this.explosionGroup = this.game.add.group();
 
-     // Create a group for explosions
-     this.explosionGroup = this.game.add.group();
+    this.player = new Player({
+      game: this.game,
+      x: this.world.centerX,
+      y: this.world.centerY,
+      asset: 'player'
+    });
+    this.game.add.existing(this.player);
 
-    this.createPlayer();
     this.createEnemies();
-    this.createCursor();
   }
 
   update() {
-    this.updatePlayer();
     this.updateEnemies();
-    this.updateCursor();
   }
 
   render() {
     this.game.debug.body(this.player);
-    this.game.debug.body(this.cursor);
-  }
-
-  createPlayer() {
-    this.player = this.add.sprite(
-      this.game.world.centerX,
-      this.game.world.centerY,
-      'player'
-    );
-    this.player.anchor.setTo(0.5, 0.5);
-    this.game.physics.arcade.enable(this.player);
-    this.player.body.collideWorldBounds = true;
   }
 
   createEnemies(x, y) {
@@ -66,71 +55,6 @@ class GameState extends Phaser.State {
       // this.game.add.existing(
       //   new Enemy(this.game, this.game.width/2, this.game.height - 16, this.player)
       // );
-  }
-
-  createCursor() {
-    this.cursor = this.add.sprite(
-      this.player.x,
-      this.player.y,
-      'cursor'
-    );
-    this.cursor.anchor.setTo(0.5, 0.5);
-
-    this.cursor.pivot.x = 0;
-    this.cursor.pivot.y = this.player.width + 40;
-
-    this.graphics = this.game.add.graphics(
-      this.player.x,
-      this.player.y
-    );
-
-    this.graphics.lineStyle(1, 0xFF0000, 0.5);
-
-    this.graphics.moveTo(0, 0);
-    this.graphics.lineTo(30, -(this.player.width + 40));
-    this.graphics.lineTo(-30, -(this.player.width + 40));
-    this.graphics.lineTo(0, 0);
-    this.graphics.endFill();
-  }
-
-  updateCursor() {
-    this.cursor.angle = this.player.angle;
-    this.cursor.x = this.player.x;
-    this.cursor.y = this.player.y;
-
-    this.graphics.angle = this.player.angle;
-    this.graphics.x = this.player.x;
-    this.graphics.y = this.player.y;
-  }
-
-  updatePlayer() {
-    let keyboard = this.game.input.keyboard;
-    const MOVE_STEP = 10;
-    const ROTATE_STEP = 7;
-
-    if (keyboard.isDown(Phaser.Keyboard.W)) {
-      this.player.y -= MOVE_STEP;
-    }
-
-    if (keyboard.isDown(Phaser.Keyboard.A)) {
-      this.player.x -= MOVE_STEP;
-    }
-
-    if (keyboard.isDown(Phaser.Keyboard.S)) {
-      this.player.y += MOVE_STEP;
-    }
-
-    if (keyboard.isDown(Phaser.Keyboard.D)) {
-      this.player.x += MOVE_STEP;
-    }
-
-    if (keyboard.isDown(Phaser.Keyboard.LEFT)) {
-      this.player.angle -= ROTATE_STEP;
-    }
-
-    if (keyboard.isDown(Phaser.Keyboard.RIGHT)) {
-      this.player.angle += ROTATE_STEP;
-    }
   }
 
   updateEnemies() {
