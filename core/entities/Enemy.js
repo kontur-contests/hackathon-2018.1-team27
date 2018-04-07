@@ -8,7 +8,7 @@ class Enemy extends Phaser.Sprite {
         this.anchor.setTo(0.5, 0.5);
         // Enable physics on the enemy
         game.physics.enable(this, Phaser.Physics.ARCADE);
-
+        this.enableBody = true;
         // Define constants that affect motion
         this.SPEED = 250; // enemy speed pixels/second
         this.TURN_RATE = 5; // turn rate in degrees/frame

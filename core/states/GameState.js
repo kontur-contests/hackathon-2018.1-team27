@@ -25,10 +25,12 @@ class GameState extends Phaser.State {
       asset: 'player'
     });
     this.game.add.existing(this.player);
+
   }
 
   update() {
     this.updateEnemies();
+    this.updateCollide();
   }
 
   render() {
@@ -74,7 +76,7 @@ class GameState extends Phaser.State {
     const rndSpawnPoint = spawnPoints[this.game.rnd.integerInRange(0, spawnPoints.length - 1)];
     let x = rndSpawnPoint.x;
     let y = rndSpawnPoint.y;
-    console.log('first', x, y);
+
     let enemy = this.enemiesGroup.getFirstDead();
 
     // If there aren't any available, create a new one
@@ -82,7 +84,7 @@ class GameState extends Phaser.State {
       enemy = new Enemy(this.game, x, y, this.player);
       this.enemiesGroup.add(enemy);
     }
-    
+
     enemy.revive();
 
     enemy.x = x;
@@ -124,6 +126,10 @@ class GameState extends Phaser.State {
 
     return explosion;
   };
+
+  updateCollide() {
+    this.game.physics.arcade.collide(this.enemiesGroup, this.enemiesGroup);
+  }
 
   updateEnemies() {
     if (this.enemiesGroup.countLiving() < this.MAX_ENEMIES) {
