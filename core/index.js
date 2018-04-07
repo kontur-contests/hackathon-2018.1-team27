@@ -1,7 +1,7 @@
 const config = {
   width: 800,
   height: 600,
-  renderer: Phaser.CANVAS,
+  renderer: Phaser.AUTO,
   antialias: false,
   multiTexture: false
 }
