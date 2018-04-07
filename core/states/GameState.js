@@ -27,13 +27,10 @@ class GameState extends Phaser.State {
       asset: 'player'
     });
     this.game.add.existing(this.player);
-<<<<<<< HEAD
 
     this.playerGroup.add(this.player);
 
     this.createEnemies();
-=======
->>>>>>> fdf4ecdb8d94bade3396f68f7c244dd262a2b014
   }
 
   update() {
@@ -109,7 +106,7 @@ class GameState extends Phaser.State {
       enemy = new Enemy(this.game, x, y, this.player);
       this.enemiesGroup.add(enemy);
     }
-    
+
     enemy.revive();
 
     enemy.x = x;
