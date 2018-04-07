@@ -7,6 +7,7 @@ class GameState extends Phaser.State {
   preload() {
     this.load.image('player', '/assets/sprites/player.png');
     this.load.image('cursor', '/assets/sprites/cursor.png');
+    this.load.image('bullet', '/assets/sprites/bullet.png');
     this.load.image('rocket', '/assets/gfx/rocket.png');
 
     this.load.spritesheet('explosion', '/assets/gfx/explosion.png', 128, 128);
@@ -15,6 +16,7 @@ class GameState extends Phaser.State {
   create() {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
+    this.playerGroup = this.game.add.group();
     this.enemiesGroup = this.game.add.group();
     this.explosionGroup = this.game.add.group();
 
@@ -26,11 +28,32 @@ class GameState extends Phaser.State {
     });
     this.game.add.existing(this.player);
 
+    this.playerGroup.add(this.player);
+
+    this.createEnemies();
   }
 
   update() {
     this.updateEnemies();
     this.updateCollide();
+
+    this.game.physics.arcade.overlap(
+      this.player.weapon.bullets, this.enemiesGroup, this.hitEnemy, null, this
+    );
+
+    this.game.physics.arcade.overlap(
+      this.playerGroup, this.enemiesGroup, this.hitPlayer, null, this
+    );
+  }
+
+  hitEnemy(bullet, enemy) {
+    bullet.kill();
+    enemy.kill();
+    console.log('kill enemy');
+  }
+
+  hitPlayer(a, b) {
+    debugger;
   }
 
   render() {

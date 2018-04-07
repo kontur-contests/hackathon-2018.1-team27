@@ -1,10 +1,10 @@
 class PlayerCursor extends Phaser.Sprite {
-  constructor({ game, x, y, pivotY, asset }) {
+  constructor({ game, x, y, pivotOffset, asset }) {
     super(game, x, y, asset);
 
     this.anchor.setTo(0.5);
-    this.pivot.x = 0;
-    this.pivot.y = pivotY;
+    this.pivot.x = pivotOffset;
+    this.pivot.y = 0;
   }
 
   updatePosition({ x, y, angle }) {
