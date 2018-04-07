@@ -35,6 +35,7 @@ class GameState extends Phaser.State {
 
   update() {
     this.updateEnemies();
+    this.updateCollide();
 
     this.game.physics.arcade.overlap(
       this.player.weapon.bullets, this.enemiesGroup, this.hitEnemy, null, this
@@ -94,7 +95,7 @@ class GameState extends Phaser.State {
     const rndSpawnPoint = spawnPoints[this.game.rnd.integerInRange(0, spawnPoints.length - 1)];
     let x = rndSpawnPoint.x;
     let y = rndSpawnPoint.y;
-    console.log('first', x, y);
+
     let enemy = this.enemiesGroup.getFirstDead();
 
     // If there aren't any available, create a new one
@@ -144,6 +145,10 @@ class GameState extends Phaser.State {
 
     return explosion;
   };
+
+  updateCollide() {
+    this.game.physics.arcade.collide(this.enemiesGroup, this.enemiesGroup);
+  }
 
   updateEnemies() {
     if (this.enemiesGroup.countLiving() < this.MAX_ENEMIES) {
