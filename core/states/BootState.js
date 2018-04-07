@@ -8,9 +8,14 @@ class BootState extends Phaser.State {
 
   preload() {
     this.game.load.image('raster', 'assets/sprites/purple-raster.png');
+    this.game.load.audio('music', 'assets/fx/Shaolin_Dub_-_04_-_Awake.mp3');
   }
 
   create() {
+    let fx = game.add.audio('music');
+    fx.allowMultiple = true;
+
+    fx.play();
     this.data = this.game.make.tween({ y: -70 }).to( { y: 540 }, 3000, Phaser.Easing.Sinusoidal.In).yoyo(true).generateData(30);
 
     this.rasters = this.game.add.group();

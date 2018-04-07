@@ -12,7 +12,6 @@ class GameState extends Phaser.State {
     this.load.image("monster", "/assets/sprites/enemy.png");
     this.load.image("rocket", "/assets/sprites/enemy-bullet.png");
     this.load.image("background", "/assets/sprites/bg.jpg");
-
     this.load.spritesheet("explosion", "/assets/sprites/explode.png", 82, 72);
   }
 
