@@ -6,10 +6,10 @@ class GameState extends Phaser.State {
 
   preload () {
     this.load.image('player', '/assets/sprites/player.png');
-    this.load.image('player-cursor', '/assets/sprites/cursor.png');
     this.load.image('rocket', '/assets/gfx/rocket.png');
 
-    this.game.load.spritesheet('explosion', '/assets/gfx/explosion.png', 128, 128);
+    this.load.spritesheet('explosion', '/assets/gfx/explosion.png', 128, 128);
+    this.load.image('cursor', '/assets/sprites/cursor.png');
   }
 
   create() {
@@ -23,15 +23,18 @@ class GameState extends Phaser.State {
 
     this.createPlayer();
     this.createEnemies();
+    this.createCursor();
   }
 
   update() {
     this.updatePlayer();
     this.updateEnemies();
+    this.updateCursor();
   }
 
   render() {
     this.game.debug.body(this.player);
+    this.game.debug.body(this.cursor);
   }
 
   createPlayer() {
@@ -53,16 +56,51 @@ class GameState extends Phaser.State {
           enemy = new Enemy(this.game,x,y,this.player);
           this.enemiesGroup.add(enemy);
       }
-  
+
       // Revive the missile (set it's alive property to true)
       // You can also define a onRevived event handler in your explosion objects
       // to do stuff when they are revived.
       enemy.revive();
-  
+
       return enemy;
       // this.game.add.existing(
       //   new Enemy(this.game, this.game.width/2, this.game.height - 16, this.player)
       // );
+  }
+
+  createCursor() {
+    this.cursor = this.add.sprite(
+      this.player.x,
+      this.player.y,
+      'cursor'
+    );
+    this.cursor.anchor.setTo(0.5, 0.5);
+
+    this.cursor.pivot.x = 0;
+    this.cursor.pivot.y = this.player.width + 40;
+
+    this.graphics = this.game.add.graphics(
+      this.player.x,
+      this.player.y
+    );
+
+    this.graphics.lineStyle(1, 0xFF0000, 0.5);
+
+    this.graphics.moveTo(0, 0);
+    this.graphics.lineTo(30, -(this.player.width + 40));
+    this.graphics.lineTo(-30, -(this.player.width + 40));
+    this.graphics.lineTo(0, 0);
+    this.graphics.endFill();
+  }
+
+  updateCursor() {
+    this.cursor.angle = this.player.angle;
+    this.cursor.x = this.player.x;
+    this.cursor.y = this.player.y;
+
+    this.graphics.angle = this.player.angle;
+    this.graphics.x = this.player.x;
+    this.graphics.y = this.player.y;
   }
 
   updatePlayer() {
