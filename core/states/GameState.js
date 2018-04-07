@@ -52,11 +52,7 @@ class GameState extends Phaser.State {
   }
 
   hitPlayer(a, b) {
-    debugger;
-  }
-
-  render() {
-    this.game.debug.body(this.player);
+    // debugger;
   }
 
   createEnemies() {
