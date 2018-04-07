@@ -1,7 +1,5 @@
 class BootState extends Phaser.State {
   preload () {
-    // loading all game resources
-    this.load.image('player', '/assets/sprites/player.png');
   }
 
   create () {
