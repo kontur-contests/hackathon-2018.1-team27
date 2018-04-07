@@ -27,10 +27,13 @@ class GameState extends Phaser.State {
       asset: 'player'
     });
     this.game.add.existing(this.player);
+<<<<<<< HEAD
 
     this.playerGroup.add(this.player);
 
     this.createEnemies();
+=======
+>>>>>>> fdf4ecdb8d94bade3396f68f7c244dd262a2b014
   }
 
   update() {
@@ -59,7 +62,46 @@ class GameState extends Phaser.State {
     this.game.debug.body(this.player);
   }
 
-  createEnemies(x, y) {
+  createEnemies() {
+    const spawnPoints = [{
+      x: -10,
+      y: -10
+    }, {
+      x: 400,
+      y: -10
+    }, {
+      x: 800,
+      y: -10
+    }, {
+      x: -10,
+      y: 400
+    }, {
+      x: -10,
+      y: 800
+    }, {
+      x: -10,
+      y: this.game.height + 10
+    }, {
+      x: 400,
+      y: this.game.height + 10
+    }, {
+      x: 800,
+      y:  this.game.height + 10
+    }, {
+      x: this.game.width + 10,
+      y: -10
+    }, {
+      x: this.game.width + 10,
+      y: 400
+    }, {
+      x: this.game.width + 10,
+      y: 800
+    }]
+
+    const rndSpawnPoint = spawnPoints[this.game.rnd.integerInRange(0, spawnPoints.length - 1)];
+    let x = rndSpawnPoint.x;
+    let y = rndSpawnPoint.y;
+    console.log('first', x, y);
     let enemy = this.enemiesGroup.getFirstDead();
 
     // If there aren't any available, create a new one
@@ -67,10 +109,7 @@ class GameState extends Phaser.State {
       enemy = new Enemy(this.game, x, y, this.player);
       this.enemiesGroup.add(enemy);
     }
-
-    // Revive the enemy (set it's alive property to true)
-    // You can also define a onRevived event handler in your explosion objects
-    // to do stuff when they are revived.
+    
     enemy.revive();
 
     enemy.x = x;
@@ -91,8 +130,7 @@ class GameState extends Phaser.State {
       explosion = this.game.add.sprite(0, 0, 'explosion');
       explosion.anchor.setTo(0.5, 0.5);
 
-      // Add an animation for the explosion that kills the sprite when the
-      // animation is complete
+      // Add an animation for the explosion
       var animation = explosion.animations.add('boom', [0, 1, 2, 3], 60, false);
       animation.killOnComplete = true;
 
@@ -101,31 +139,22 @@ class GameState extends Phaser.State {
     }
 
     // Revive the explosion (set it's alive property to true)
-    // You can also define a onRevived event handler in your explosion objects
-    // to do stuff when they are revived.
     explosion.revive();
 
     // Move the explosion to the given coordinates
     explosion.x = x;
     explosion.y = y;
 
-    // Set rotation of the explosion at random for a little variety
     explosion.angle = this.game.rnd.integerInRange(0, 360);
 
-    // Play the animation
     explosion.animations.play('boom');
 
-    // Return the explosion itself in case we want to do anything else with it
     return explosion;
   };
 
   updateEnemies() {
     if (this.enemiesGroup.countLiving() < this.MAX_ENEMIES) {
-      // Set the launch point to a random location
-      this.createEnemies(
-        this.game.rnd.integerInRange(50, this.game.width),
-        this.game.rnd.integerInRange(50, this.game.height)
-      );
+      this.createEnemies();
     }
 
     this.enemiesGroup.forEachAlive((m) => {
