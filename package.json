@@ -27,6 +27,6 @@
   },
   "homepage": "https://github.com/skbkontur/hackathon-2018.1-team27#readme",
   "devDependencies": {
-    "browsersync": "0.0.1-security"
+    "browser-sync": "^2.23.6"
   }
 }
