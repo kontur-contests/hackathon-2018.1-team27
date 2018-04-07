@@ -1,0 +1,32 @@
+{
+  "name": "hackathon-2018.1-team27",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx browser-sync start --server --files ./"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skbkontur/hackathon-2018.1-team27.git"
+  },
+  "authors": [
+    {
+      "name": "Sergey Dolgodvorov"
+    },
+    {
+      "name": "Egor Burdel"
+    },
+    {
+      "name": "Artem Khrulkov"
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/skbkontur/hackathon-2018.1-team27/issues"
+  },
+  "homepage": "https://github.com/skbkontur/hackathon-2018.1-team27#readme",
+  "devDependencies": {
+    "browsersync": "0.0.1-security"
+  }
+}
