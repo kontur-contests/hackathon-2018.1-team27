@@ -68,6 +68,7 @@ class GameState extends Phaser.State {
     console.log('kill enemy');
   }
 
+<<<<<<< HEAD
   hitPlayer(player, bullet) {
     console.log('player', player, 'bullet', bullet);
     player.kill();
@@ -81,6 +82,10 @@ class GameState extends Phaser.State {
 
   render() {
     this.game.debug.body(this.player);
+=======
+  hitPlayer(a, b) {
+    // debugger;
+>>>>>>> 1d14e82e5e8f7d3308f2773b33279c0366855046
   }
 
   createEnemies() {
