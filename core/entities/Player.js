@@ -6,18 +6,22 @@ class Player extends Phaser.Sprite {
     this.game.physics.enable(this, Phaser.Physics.ARCADE);
     this.body.collideWorldBounds = true;
 
-    this.cursor = new PlayerCursor({
-      game: this.game,
-      x: this.x,
-      y: this.y,
-      pivotY: this.width + 40,
-      asset: 'cursor',
-    });
+    this.cursor = new PlayerCursor(
+      {
+        game: this.game,
+        x: this.x,
+        y: this.y,
+        pivotOffset: -(this.width + 40),
+        asset: 'cursor',
+      }
+    );
 
     this.game.add.existing(this.cursor);
 
     this.MOVE_STEP = 10;
     this.ROTATE_STEP = 7;
+
+    this.createWeapon();
   }
 
   update() {
@@ -54,5 +58,21 @@ class Player extends Phaser.Sprite {
     if (keyboard.isDown(Phaser.Keyboard.RIGHT)) {
       this.angle += this.ROTATE_STEP;
     }
+
+    if(keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
+      this.weapon.fire();
+    }
+  }
+
+  createWeapon () {
+    this.weapon = this.game.add.weapon(100, 'bullet');
+
+    this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
+    this.weapon.bulletAngleOffset = 90;
+    this.weapon.bulletSpeed = 1000;
+    this.weapon.fireRate = 100;
+    this.weapon.bulletAngleVariance = 10;
+
+    this.weapon.trackSprite(this, 14, 0, true);
   }
 }
