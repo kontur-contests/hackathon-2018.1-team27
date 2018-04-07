@@ -12,5 +12,4 @@ game.state.add('Boot', BootState);
 game.state.add('Game', GameState);
 game.state.add('GameOver', GameOverState);
 
-// game.state.start('Boot');
-game.state.start('Game');
+game.state.start('Boot');

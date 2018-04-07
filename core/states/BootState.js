@@ -1,18 +1,17 @@
 class BootState extends Phaser.State {
-  preload () {
-  }
+  preload() {}
 
-  create () {
+  create() {
     this.title = new Phaser.Text(
       this.game,
       this.game.world.centerX,
       this.game.world.centerY - 200,
-      "Erase'Em Up",
+      "Dream Game",
       {
         font: "36px Tahoma",
         fill: "white",
-        align: "center",
-      },
+        align: "center"
+      }
     );
 
     this.title.anchor.setTo(0.5);
@@ -29,8 +28,8 @@ class BootState extends Phaser.State {
       style: {
         font: "16px Verdana",
         fill: "white",
-        align: "center",
-      },
+        align: "center"
+      }
     });
 
     this.start.onInputUp.add(() => this.state.start("Game"));
