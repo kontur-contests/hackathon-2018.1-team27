@@ -60,10 +60,9 @@ class Player extends Phaser.Sprite {
     }
 
     if(keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
-      this.weapon.fire();
-      this.weapon.fire();
-      this.weapon.fire();
-
+      for(let i = 0; i < this.game.rnd.integerInRange(3, 12); i++) {
+        this.weapon.fire();
+      }
     }
   }
 
@@ -73,7 +72,7 @@ class Player extends Phaser.Sprite {
     this.weapon.bulletKillType = Phaser.Weapon.KILL_DISTANCE;
     this.weapon.bulletAngleOffset = 90;
     this.weapon.bulletKillDistance = 150;
-    this.weapon.bulletSpeed = 500;
+    this.weapon.bulletSpeed = 400;
     this.weapon.fireRate = 600;
     this.weapon.multiFire = true;
     this.weapon.bulletAngleVariance = 10;
