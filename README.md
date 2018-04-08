@@ -1,1 +1,6 @@
-Super cool game. The Dream Game
+The Dream Game
+
+```
+npm install
+npm start
+```
