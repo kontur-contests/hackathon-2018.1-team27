@@ -1,1 +1,1 @@
-Super cool game
+Super cool game. The Dream Game
