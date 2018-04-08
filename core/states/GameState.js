@@ -7,12 +7,12 @@ class GameState extends Phaser.State {
   }
 
   preload() {
-    this.load.image("player", "/assets/sprites/player.png");
-    this.load.image("bullet", "/assets/sprites/bullet.png");
-    this.load.image("monster", "/assets/sprites/enemy.png");
-    this.load.image("rocket", "/assets/sprites/enemy-bullet.png");
-    this.load.image("background", "/assets/sprites/bg.jpg");
-    this.load.spritesheet("explosion", "/assets/sprites/explode.png", 82, 72);
+    this.load.image("player", "assets/sprites/player.png");
+    this.load.image("bullet", "assets/sprites/bullet.png");
+    this.load.image("monster", "assets/sprites/enemy.png");
+    this.load.image("rocket", "assets/sprites/enemy-bullet.png");
+    this.load.image("background", "assets/sprites/bg.jpg");
+    this.load.spritesheet("explosion", "assets/sprites/explode.png", 82, 72);
   }
 
   create() {
